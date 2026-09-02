@@ -1,4 +1,4 @@
-package com.VlixAli.gatherly.dto;
+package com.VlixAli.paleo.dto;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.VlixAli.gatherly.config;
+package com.VlixAli.paleo.config;
 
 
 import org.springframework.context.annotation.Bean;

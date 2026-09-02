@@ -1,10 +1,10 @@
-package com.VlixAli.gatherly;
+package com.VlixAli.paleo;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class GatherlyApplicationTests {
+class PaleoApplicationTests {
 
 	@Test
 	void contextLoads() {
