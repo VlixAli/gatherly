@@ -1,13 +1,13 @@
-package com.VlixAli.gatherly;
+package com.VlixAli.paleo;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class GatherlyApplication {
+public class PaleoApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(GatherlyApplication.class, args);
+		SpringApplication.run(PaleoApplication.class, args);
 	}
 
 }

@@ -3,13 +3,13 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://localhost:8080/realms/gatherly
+          issuer-uri: http://localhost:8080/realms/paleo
           audiences:
-            - gatherly-backend
+            - paleo-backend
   datasource:
-    url: jdbc:postgresql://localhost:5434/gatherly
-    username: ${DB_USERNAME:gatherly}
-    password: ${DB_PASSWORD:gatherly}
+    url: jdbc:postgresql://localhost:5434/paleo
+    username: ${DB_USERNAME:paleo}
+    password: ${DB_PASSWORD:paleo}
   jpa:
     hibernate:
       ddl-auto: update
