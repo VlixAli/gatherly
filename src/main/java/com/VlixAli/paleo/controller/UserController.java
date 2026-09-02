@@ -1,6 +1,6 @@
-package com.VlixAli.gatherly.controller;
+package com.VlixAli.paleo.controller;
 
-import com.VlixAli.gatherly.dto.UserMeResponse;
+import com.VlixAli.paleo.dto.UserMeResponse;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.GetMapping;

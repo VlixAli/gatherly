@@ -2,20 +2,20 @@ services:
 
   postgres:
     image: postgres:18
-    container_name: gatherly-postgres
+    container_name: paleo-postgres
     environment:
-      POSTGRES_DB: gatherly
-      POSTGRES_USER: gatherly
-      POSTGRES_PASSWORD: gatherly
+      POSTGRES_DB: paleo
+      POSTGRES_USER: paleo
+      POSTGRES_PASSWORD: paleo
     ports:
       - "5434:5432"
     volumes:
-      - gatherly-postgres-data:/var/lib/postgresql
+      - paleo-postgres-data:/var/lib/postgresql
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro
 
   keycloak:
     image: quay.io/keycloak/keycloak:latest
-    container_name: gatherly-keycloak
+    container_name: paleo-keycloak
     command: start-dev
     environment:
       KC_BOOTSTRAP_ADMIN_USERNAME: admin
@@ -32,4 +32,4 @@ services:
       - postgres
 
 volumes:
-  gatherly-postgres-data:
+  paleo-postgres-data:

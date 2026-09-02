@@ -1,4 +1,4 @@
-package com.VlixAli.gatherly.config;
+package com.VlixAli.paleo.config;
 
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.core.GrantedAuthority;
