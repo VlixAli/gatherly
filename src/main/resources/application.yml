@@ -4,3 +4,14 @@ spring:
       resourceserver:
         jwt:
           issuer-uri: http://localhost:8080/realms/gatherly
+          audiences:
+            - gatherly-backend
+  datasource:
+    url: jdbc:postgresql://localhost:5434/gatherly
+    username: ${DB_USERNAME:gatherly}
+    password: ${DB_PASSWORD:gatherly}
+  jpa:
+    hibernate:
+      ddl-auto: update
+server:
+  port: 8082
