@@ -3,4 +3,15 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://localhost:8080/realms/gatherly
+          issuer-uri: http://localhost:8080/realms/paleo
+          audiences:
+            - paleo-backend
+  datasource:
+    url: jdbc:postgresql://localhost:5434/paleo
+    username: ${DB_USERNAME:paleo}
+    password: ${DB_PASSWORD:paleo}
+  jpa:
+    hibernate:
+      ddl-auto: update
+server:
+  port: 8082

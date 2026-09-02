@@ -1,10 +1,35 @@
 services:
+
+  postgres:
+    image: postgres:18
+    container_name: paleo-postgres
+    environment:
+      POSTGRES_DB: paleo
+      POSTGRES_USER: paleo
+      POSTGRES_PASSWORD: paleo
+    ports:
+      - "5434:5432"
+    volumes:
+      - paleo-postgres-data:/var/lib/postgresql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+
   keycloak:
     image: quay.io/keycloak/keycloak:latest
-    container_name: gatherly-keycloak
+    container_name: paleo-keycloak
     command: start-dev
     environment:
       KC_BOOTSTRAP_ADMIN_USERNAME: admin
       KC_BOOTSTRAP_ADMIN_PASSWORD: admin
+
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://postgres:5432/keycloak
+      KC_DB_USERNAME: keycloak
+      KC_DB_PASSWORD: keycloak
+
     ports:
       - "8080:8080"
+    depends_on:
+      - postgres
+
+volumes:
+  paleo-postgres-data:
