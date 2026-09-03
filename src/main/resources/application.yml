@@ -12,6 +12,8 @@ spring:
     password: ${DB_PASSWORD:paleo}
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: validate
+  liquibase:
+    change-log: classpath:db/changelog/root-changelog.yaml
 server:
   port: 8082
