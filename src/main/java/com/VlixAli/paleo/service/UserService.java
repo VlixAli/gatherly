@@ -28,7 +28,6 @@ public class UserService {
 
     @Transactional
     public UserResponse updateMe(Authentication authentication, UserUpdateRequest request) {
-
         User user = resolveCurrentUser(authentication);
         if (request.username() != null && !request.username().equals(user.getUsername())
                 && userRepository.existsByUsername(request.username())) {
@@ -42,8 +41,8 @@ public class UserService {
     private User resolveCurrentUser(Authentication authentication) {
         Jwt jwt = ((JwtAuthenticationToken) authentication).getToken();
 
-        String keycloakId = jwt.getSubject();
-        if (keycloakId == null || keycloakId.isBlank()) {
+        String keycloakUserId = jwt.getSubject();
+        if (keycloakUserId == null || keycloakUserId.isBlank()) {
             throw new IllegalArgumentException("JWT subject (sub) is missing");
         }
 
@@ -55,9 +54,9 @@ public class UserService {
         String nameClaim = jwt.getClaimAsString("name");
         String displayName = (nameClaim == null || nameClaim.isBlank()) ? username : nameClaim;
 
-        return userRepository.findByKeycloakId(keycloakId)
+        return userRepository.findByKeycloakUserId(keycloakUserId)
                 .orElseGet(() -> userRepository.save(User.builder()
-                        .keycloakId(keycloakId)
+                        .keycloakUserId(keycloakUserId)
                         .username(username)
                         .displayName(displayName)
                         .build()));

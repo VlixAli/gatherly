@@ -8,6 +8,10 @@ public record UserUpdateRequest(
         String username,
         @NullOrNotBlank
         String displayName,
+        @NullOrNotBlank
+        String homeCity,
+        @NullOrNotBlank
+        String workCity,
         String bio
 ) {
 }

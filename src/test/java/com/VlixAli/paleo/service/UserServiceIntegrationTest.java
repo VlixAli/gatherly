@@ -26,13 +26,13 @@ class UserServiceIntegrationTest {
     @Test
     void userACannotUpdateUserB() {
         User userB = userRepository.save(User.builder()
-                .keycloakId("kc-bob").username("bob").displayName("Bob").bio("bob bio").build());
+                .keycloakUserId("kc-bob").username("bob").displayName("Bob").bio("bob bio").build());
         userRepository.save(User.builder()
-                .keycloakId("kc-alice").username("alice").displayName("Alice").build());
+                .keycloakUserId("kc-alice").username("alice").displayName("Alice").build());
 
         var response = userService.updateMe(
                 auth("kc-alice", "alice", "Alice"),
-                new UserUpdateRequest("alice-new", null, "alice bio"));
+                new UserUpdateRequest("alice-new", null, null, null, "alice bio"));
 
         assertThat(response.username()).isEqualTo("alice-new");
         User reloadedB = userRepository.findById(userB.getId()).orElseThrow();
@@ -47,13 +47,13 @@ class UserServiceIntegrationTest {
 
         assertThat(response.username()).isEqualTo("newbie");
         assertThat(response.displayName()).isEqualTo("newbie");
-        assertThat(userRepository.findByKeycloakId("kc-new")).isPresent();
+        assertThat(userRepository.findByKeycloakUserId("kc-new")).isPresent();
     }
 
     @Test
     void existingUserReturnsExistingWithoutDuplicate() {
         userRepository.save(User.builder()
-                .keycloakId("kc-alice").username("alice").displayName("Alice").build());
+                .keycloakUserId("kc-alice").username("alice").displayName("Alice").build());
 
         var response = userService.me(auth("kc-alice", "alice-changed", "Changed"));
 

@@ -56,7 +56,7 @@ class UserControllerAuthTest {
 
     @Test
     void authenticatedGetReturnsOwnProfile() throws Exception {
-        when(userService.me(any())).thenReturn(response("alice"));
+        when(userService.me(any())).thenReturn(response("user-a", "alice"));
 
         mockMvc.perform(get("/api/users/me").with(jwt("user-a", "alice")))
                 .andExpect(status().isOk())
@@ -70,13 +70,13 @@ class UserControllerAuthTest {
 
     @Test
     void patchUpdatesOwnProfile() throws Exception {
-        when(userService.updateMe(any(), any())).thenReturn(response("alice-new"));
+        when(userService.updateMe(any(), any())).thenReturn(response("user-a", "alice-new"));
 
         mockMvc.perform(patch("/api/users/me")
                         .with(jwt("user-a", "alice"))
                         .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"username\":\"alice-new\",\"bio\":\"hello\"}"))
+                        .content("{\"username\":\"alice-new\",\"homeCity\":\"Berlin\",\"bio\":\"hello\"}"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.username").value("alice-new"));
 
@@ -86,6 +86,7 @@ class UserControllerAuthTest {
         assertThat(((JwtAuthenticationToken) auth.getValue()).getToken().getSubject())
                 .isEqualTo("user-a");
         assertThat(request.getValue().username()).isEqualTo("alice-new");
+        assertThat(request.getValue().homeCity()).isEqualTo("Berlin");
         assertThat(request.getValue().bio()).isEqualTo("hello");
     }
 
@@ -99,8 +100,8 @@ class UserControllerAuthTest {
                 .andExpect(status().isBadRequest());
     }
 
-    private static UserResponse response(String username) {
-        return new UserResponse(UUID.randomUUID(), username, username, null, Instant.now(), Instant.now());
+    private static UserResponse response(String keycloakUserId, String username) {
+        return new UserResponse(UUID.randomUUID(), keycloakUserId, username, username, null, null, null, Instant.now(), Instant.now());
     }
 
     private static SecurityMockMvcRequestPostProcessors.JwtRequestPostProcessor jwt(

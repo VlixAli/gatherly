@@ -14,14 +14,14 @@ class UserRepositoryTest {
     private UserRepository userRepository;
 
     @Test
-    void findByKeycloakIdReturnsExistingUser() {
+    void findByKeycloakUserIdReturnsExistingUser() {
         userRepository.save(User.builder()
-                .keycloakId("kc-alice")
+                .keycloakUserId("kc-alice")
                 .username("alice")
                 .displayName("Alice")
                 .build());
 
-        assertThat(userRepository.findByKeycloakId("kc-alice"))
+        assertThat(userRepository.findByKeycloakUserId("kc-alice"))
                 .isPresent()
                 .get()
                 .extracting(User::getUsername)
@@ -29,7 +29,7 @@ class UserRepositoryTest {
     }
 
     @Test
-    void findByKeycloakIdUnknownReturnsEmpty() {
-        assertThat(userRepository.findByKeycloakId("kc-unknown")).isEmpty();
+    void findByKeycloakUserIdUnknownReturnsEmpty() {
+        assertThat(userRepository.findByKeycloakUserId("kc-unknown")).isEmpty();
     }
 }

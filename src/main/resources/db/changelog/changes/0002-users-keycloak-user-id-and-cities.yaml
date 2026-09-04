@@ -1,0 +1,19 @@
+databaseChangeLog:
+  - changeSet:
+      id: 0002-users-keycloak-user-id-and-cities
+      author: paleo
+      changes:
+        - renameColumn:
+            tableName: users
+            oldColumnName: keycloak_id
+            newColumnName: keycloak_user_id
+            columnDataType: VARCHAR(255)
+        - addColumn:
+            tableName: users
+            columns:
+              - column:
+                  name: home_city
+                  type: VARCHAR(255)
+              - column:
+                  name: work_city
+                  type: VARCHAR(255)

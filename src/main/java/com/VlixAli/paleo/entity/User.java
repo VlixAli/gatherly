@@ -30,14 +30,20 @@ public class User {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(name = "keycloak_id", nullable = false, unique = true)
-    private String keycloakId;
+    @Column(name = "keycloak_user_id", nullable = false, unique = true)
+    private String keycloakUserId;
 
     @Column(name = "username", nullable = false, unique = true)
     private String username;
 
     @Column(name = "display_name", nullable = false)
     private String displayName;
+
+    @Column(name = "home_city")
+    private String homeCity;
+
+    @Column(name = "work_city")
+    private String workCity;
 
     @Column(name = "bio", columnDefinition = "TEXT")
     private String bio;

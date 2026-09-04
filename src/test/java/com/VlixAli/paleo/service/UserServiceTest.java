@@ -41,8 +41,8 @@ class UserServiceTest {
     @Test
     void existingUserReturnsExistingWithoutSave() {
         User existing = User.builder()
-                .keycloakId("kc-alice").username("alice").displayName("Alice").build();
-        when(userRepository.findByKeycloakId("kc-alice")).thenReturn(Optional.of(existing));
+                .keycloakUserId("kc-alice").username("alice").displayName("Alice").build();
+        when(userRepository.findByKeycloakUserId("kc-alice")).thenReturn(Optional.of(existing));
 
         UserResponse response = userService.me(auth("kc-alice", "alice", "Alice"));
 
@@ -52,14 +52,14 @@ class UserServiceTest {
 
     @Test
     void unknownKeycloakIdCreatesUser() {
-        when(userRepository.findByKeycloakId("kc-new")).thenReturn(Optional.empty());
+        when(userRepository.findByKeycloakUserId("kc-new")).thenReturn(Optional.empty());
         when(userRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
 
         UserResponse response = userService.me(auth("kc-new", "newbie", null));
 
         ArgumentCaptor<User> saved = ArgumentCaptor.forClass(User.class);
         verify(userRepository).save(saved.capture());
-        assertThat(saved.getValue().getKeycloakId()).isEqualTo("kc-new");
+        assertThat(saved.getValue().getKeycloakUserId()).isEqualTo("kc-new");
         assertThat(saved.getValue().getUsername()).isEqualTo("newbie");
         assertThat(saved.getValue().getDisplayName()).isEqualTo("newbie");
         assertThat(response.username()).isEqualTo("newbie");
@@ -68,12 +68,12 @@ class UserServiceTest {
     @Test
     void updateMeAppliesOnlyProvidedFields() {
         User existing = User.builder()
-                .keycloakId("kc-alice").username("alice").displayName("Alice").bio("old").build();
-        when(userRepository.findByKeycloakId("kc-alice")).thenReturn(Optional.of(existing));
+                .keycloakUserId("kc-alice").username("alice").displayName("Alice").bio("old").build();
+        when(userRepository.findByKeycloakUserId("kc-alice")).thenReturn(Optional.of(existing));
 
         UserResponse response = userService.updateMe(
                 auth("kc-alice", "alice", "Alice"),
-                new UserUpdateRequest(null, "Alice A.", "new bio"));
+                new UserUpdateRequest(null, "Alice A.", null, null, "new bio"));
 
         assertThat(response.displayName()).isEqualTo("Alice A.");
         assertThat(response.bio()).isEqualTo("new bio");
@@ -82,15 +82,30 @@ class UserServiceTest {
     }
 
     @Test
+    void updateMeAppliesCities() {
+        User existing = User.builder()
+                .keycloakUserId("kc-alice").username("alice").displayName("Alice").build();
+        when(userRepository.findByKeycloakUserId("kc-alice")).thenReturn(Optional.of(existing));
+
+        UserResponse response = userService.updateMe(
+                auth("kc-alice", "alice", "Alice"),
+                new UserUpdateRequest(null, null, "Berlin", "Munich", null));
+
+        assertThat(response.homeCity()).isEqualTo("Berlin");
+        assertThat(response.workCity()).isEqualTo("Munich");
+        assertThat(response.username()).isEqualTo("alice");
+    }
+
+    @Test
     void updateMeTakenUsernameConflicts() {
         User existing = User.builder()
-                .keycloakId("kc-alice").username("alice").displayName("Alice").build();
-        when(userRepository.findByKeycloakId("kc-alice")).thenReturn(Optional.of(existing));
+                .keycloakUserId("kc-alice").username("alice").displayName("Alice").build();
+        when(userRepository.findByKeycloakUserId("kc-alice")).thenReturn(Optional.of(existing));
         when(userRepository.existsByUsername("bob")).thenReturn(true);
 
         assertThatThrownBy(() -> userService.updateMe(
                 auth("kc-alice", "alice", "Alice"),
-                new UserUpdateRequest("bob", null, null)))
+                new UserUpdateRequest("bob", null, null, null, null)))
                 .isInstanceOf(ResponseStatusException.class)
                 .extracting(e -> ((ResponseStatusException) e).getStatusCode())
                 .isEqualTo(HttpStatus.CONFLICT);
