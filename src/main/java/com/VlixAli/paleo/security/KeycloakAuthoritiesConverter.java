@@ -1,4 +1,4 @@
-package com.VlixAli.paleo.config;
+package com.VlixAli.paleo.security;
 
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.core.GrantedAuthority;

@@ -1,0 +1,7 @@
+databaseChangeLog:
+  - include:
+      file: changes/0001-create-users.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: changes/0002-users-keycloak-user-id-and-cities.yaml
+      relativeToChangelogFile: true

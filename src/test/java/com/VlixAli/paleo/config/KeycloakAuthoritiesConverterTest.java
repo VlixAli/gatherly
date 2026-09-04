@@ -1,5 +1,6 @@
 package com.VlixAli.paleo.config;
 
+import com.VlixAli.paleo.security.KeycloakAuthoritiesConverter;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.jwt.Jwt;

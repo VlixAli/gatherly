@@ -1,6 +1,6 @@
 package com.VlixAli.paleo.controller;
 
-import com.VlixAli.paleo.config.SecurityConfig;
+import com.VlixAli.paleo.security.SecurityConfig;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;

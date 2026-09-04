@@ -1,4 +1,4 @@
-package com.VlixAli.paleo.config;
+package com.VlixAli.paleo.security;
 
 
 import org.springframework.context.annotation.Bean;
